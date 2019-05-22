@@ -1,8 +1,6 @@
 # Qywechat::Notifier
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/qywechat/notifier`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+引用 exception_notifier 向企业微信发送异常通知。
 
 ## Installation
 
@@ -22,7 +20,36 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+在 application.yml 中配置[EXCEPTION_QY_CORPID](https://work.weixin.qq.com/api/doc#90000/90135/90665)、[EXCEPTION_QY_CORPSECRET](https://work.weixin.qq.com/api/doc#90000/90135/90665)、[EXCEPTION_QY_CHATID](https://work.weixin.qq.com/api/doc#90000/90135/90665)。
+
+    EXCEPTION_QY_CORPID: ''
+    EXCEPTION_QY_CORPSECRET: ''
+    EXCEPTION_QY_CHATID: ''
+
+其中`CHATID`可自定义组合`0-9` `a-z` `A-Z`, 配置后可通过:
+
+    $ rake create_groupchat
+
+按照引导生成群聊，并向群聊发送一条消息，初始有一位群主和一位群员。后续可在企业微信内添加额外成员。
+
+
+另在 config/initializers/exception_notification.rb 需要配置
+
+    require 'exception_notification/rails'
+    require 'exception_notification/sidekiq'
+
+    ExceptionNotification.configure do |config|
+
+      ...
+
+      if ENV['EXCEPTION_QY_CORPID'].present?
+        config.add_notifier :qy_wechat, {
+          corpid: ENV['EXCEPTION_QY_CORPID'],
+          corpsecret: ENV['EXCEPTION_QY_CORPSECRET'],
+          chatid: ENV['EXCEPTION_QY_CHATID']
+        }
+      end
+    end
 
 ## Development
 
