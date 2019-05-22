@@ -14,17 +14,7 @@ module Qywechat
         @api_message ||= QyAPI::API::Message.new
       end
 
-      def self.corpid
-        ENV['EXCEPTION_QY_CORPID']
-      end
-
-      def self.chatid
-        ENV['EXCEPTION_QY_CHATID']
-      end
-
-      def self.corpsecret
-        ENV['EXCEPTION_QY_CORPSECRET']
-      end
+      mattr_accessor :corpid, :chatid, :corpsecret
     end
   end
 end

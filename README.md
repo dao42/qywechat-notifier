@@ -20,11 +20,14 @@ Or install it yourself as:
 
 ## Usage
 
-在 application.yml 中配置[EXCEPTION_QY_CORPID](https://work.weixin.qq.com/api/doc#90000/90135/90665)、[EXCEPTION_QY_CORPSECRET](https://work.weixin.qq.com/api/doc#90000/90135/90665)、[EXCEPTION_QY_CHATID](https://work.weixin.qq.com/api/doc#90000/90135/90665)。
+在 `config/initializers` 新建配置文件 `qrwechat_notifier.rb`, 并配置 [CORPID](https://work.weixin.qq.com/api/doc#90000/90135/90665)、[CORPSECRET](https://work.weixin.qq.com/api/doc#90000/90135/90665)、[CHATID](https://work.weixin.qq.com/api/doc#90000/90135/90665)。
 
-    EXCEPTION_QY_CORPID: ''
-    EXCEPTION_QY_CORPSECRET: ''
-    EXCEPTION_QY_CHATID: ''
+    Qywechat::Notifier.configure do |config|
+      config.corpid = ''
+      config.chatid = ''
+      config.corpsecret = ''
+    end
+
 
 其中`CHATID`可自定义组合`0-9` `a-z` `A-Z`, 配置后可通过:
 
@@ -33,7 +36,7 @@ Or install it yourself as:
 按照引导生成群聊，并向群聊发送一条消息，初始有一位群主和一位群员。后续可在企业微信内添加额外成员。
 
 
-另在 config/initializers/exception_notification.rb 需要配置
+另在 `config/initializers/exception_notification.rb` 需要配置
 
     require 'exception_notification/rails'
     require 'exception_notification/sidekiq'
@@ -42,13 +45,7 @@ Or install it yourself as:
 
       ...
 
-      if ENV['EXCEPTION_QY_CORPID'].present?
-        config.add_notifier :qy_wechat, {
-          corpid: ENV['EXCEPTION_QY_CORPID'],
-          corpsecret: ENV['EXCEPTION_QY_CORPSECRET'],
-          chatid: ENV['EXCEPTION_QY_CHATID']
-        }
-      end
+      config.add_notifier :qy_wechat
     end
 
 ## Development
