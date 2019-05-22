@@ -8,7 +8,6 @@ module ExceptionNotifier
 
     def call(exception, options={})
       env = options[:env]
-      pp 111, exception
 
       if env.present?
         # 这里是外部请求导致的异常
