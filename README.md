@@ -1,52 +1,91 @@
 # Qywechat::Notifier
 
-引用 exception_notifier 向企业微信发送异常通知。
+为你的 Rails 应用添加企业微信异常监控。
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your Rails application's Gemfile:
 
 ```ruby
-gem 'qywechat-notifier'
+gem 'qywechat-notifier', github: 'dao42/qywechat-notifier'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install qywechat-notifier
-
 ## Usage
 
-在 `config/initializers` 新建配置文件 `qrwechat_notifier.rb`, 并配置 [CORPID](https://work.weixin.qq.com/api/doc#90000/90135/90665)、[CORPSECRET](https://work.weixin.qq.com/api/doc#90000/90135/90665)、[CHATID](https://work.weixin.qq.com/api/doc#90000/90135/90665)。
+### 创建群聊会话
 
-    Qywechat::Notifier.configure do |config|
-      config.corpid = ''
-      config.chatid = ''
-      config.corpsecret = ''
-    end
+系统提供了 Rake 命令，帮助快速创建一个会话
 
+```bash
+$ rails create_groupchat
+```
 
-其中`CHATID`可自定义组合`0-9` `a-z` `A-Z`, 配置后可通过:
+请按照引导创建群聊，创建成功后系统会发送一条消息，初始至少需要一位群主和一位群员。后续可手动去企业微信APP中添加其他成员。
 
-    $ rake create_groupchat
+记录好 CHATID。
 
-按照引导生成群聊，并向群聊发送一条消息，初始有一位群主和一位群员。后续可在企业微信内添加额外成员。
+### 配置
 
+创建配置文件，并修改配置项。
 
-另在 `config/initializers/exception_notification.rb` 需要配置
+```ruby
+# config/initializers/qywechat_notifier.rb
+Qywechat::Notifier.configure do |config|
+  config.corpid = 'yourcorpid'
+  config.corpsecret = 'yourcorpsecret'
+  config.chatid = 'yourchatid'
+end
+```
 
-    require 'exception_notification/rails'
-    require 'exception_notification/sidekiq'
+各参数配置的含义:
 
-    ExceptionNotification.configure do |config|
+CORPID: 参见[说明](https://work.weixin.qq.com/api/doc#90000/90135/90665)
 
-      ...
+CORPSECRET: 参见[说明](https://work.weixin.qq.com/api/doc#90000/90135/90665)
 
-      config.add_notifier :qy_wechat, {}
-    end
+CHATID: 上面用 Rake 命令创建的群聊ID，参见[说明](https://work.weixin.qq.com/api/doc#90000/90135/90245)
+
+### 配置 exception_notification，启用插件
+
+```ruby
+# config/initializers/exception_notification.rb
+require 'exception_notification/rails'
+require 'exception_notification/sidekiq'
+
+ExceptionNotification.configure do |config|
+  ...
+  ...
+  config.add_notifier :qy_wechat, {}
+end
+```
+
+### 完成
+
+到此，所有 Rails 应用异常都可以发送到群聊之中了。
+
+## 定制异常内容
+
+额外异常内容，可写入 `request.env['exception_notifier.exception_data']` 中，如：
+
+```ruby
+# app/controllers/application_controller.rb
+class ApplicationController < ActionController::Base
+
+  # 增加以下内容
+  before_action :prepare_exception_notifier
+
+  private
+  def prepare_exception_notifier
+    request.env['exception_notifier.exception_data'] = {
+      current_user: current_user&.id
+    }
+  end
+end
+```
 
 ## Development
 
