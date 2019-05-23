@@ -1,3 +1,5 @@
+require 'http'
+
 module Qywechat
   module Notifier
     module QyAPI
