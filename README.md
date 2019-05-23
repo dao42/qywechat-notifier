@@ -45,7 +45,7 @@ Or install it yourself as:
 
       ...
 
-      config.add_notifier :qy_wechat
+      config.add_notifier :qy_wechat, {}
     end
 
 ## Development
