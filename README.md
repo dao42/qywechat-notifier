@@ -7,8 +7,15 @@
 Add this line to your Rails application's Gemfile:
 
 ```ruby
+gem 'qywechat-notifier'
+```
+
+or use the lastest version on Github:
+
+```ruby
 gem 'qywechat-notifier', github: 'dao42/qywechat-notifier'
 ```
+
 
 And then execute:
 

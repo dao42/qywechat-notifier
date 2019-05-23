@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["chen1125he@163.com"]
 
   spec.summary       = %q{qywechat exception notifier}
-  spec.homepage      = "https://github.com/80percent/qywechat-notifier"
+  spec.homepage      = "https://github.com/dao42/qywechat-notifier"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.
