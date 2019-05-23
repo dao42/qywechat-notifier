@@ -1,3 +1,4 @@
+require 'exception_notification'
 require 'qywechat/notifier'
 
 module ExceptionNotifier
