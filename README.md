@@ -23,17 +23,6 @@ And then execute:
 
 ## Usage
 
-### 创建群聊会话
-
-系统提供了 Rake 命令，帮助快速创建一个会话
-
-```bash
-$ rails create_groupchat
-```
-
-请按照引导创建群聊，创建成功后系统会发送一条消息，初始至少需要一位群主和一位群员。后续可手动去企业微信APP中添加其他成员。
-
-记录好 CHATID。
 
 ### 配置
 
@@ -54,7 +43,19 @@ CORPID: 参见[说明](https://work.weixin.qq.com/api/doc#90000/90135/90665)
 
 CORPSECRET: 参见[说明](https://work.weixin.qq.com/api/doc#90000/90135/90665)
 
-CHATID: 上面用 Rake 命令创建的群聊ID，参见[说明](https://work.weixin.qq.com/api/doc#90000/90135/90245)
+CHATID: 先配置为空，下面更新为 Rake 命令创建的群聊ID，参见[说明](https://work.weixin.qq.com/api/doc#90000/90135/90245)
+
+### 创建群聊会话
+
+系统提供了 Rake 命令，帮助快速创建一个会话
+
+```bash
+$ rails create_groupchat
+```
+
+请按照引导创建群聊，创建成功后系统会发送一条消息，初始至少需要一位群主和一位群员。后续可手动去企业微信APP中添加其他成员。
+
+别忘了更新第一步的配置中的 CHATID。
 
 ### 配置 exception_notification，启用插件
 
@@ -102,7 +103,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/qywechat-notifier. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dao42/qywechat-notifier. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -110,4 +111,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Qywechat::Notifier project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/qywechat-notifier/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Qywechat::Notifier project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/dao42/qywechat-notifier/blob/master/CODE_OF_CONDUCT.md).
