@@ -67,9 +67,11 @@ require 'exception_notification/sidekiq'
 ExceptionNotification.configure do |config|
   ...
   ...
-  config.add_notifier :qy_wechat, {}
+  config.add_notifier :qy_wechat, { filter_exception: true }
 end
 ```
+
+选项 `filter_exception` 控制是否过滤Rails内部异常堆栈，只显示应用自身堆栈，默认为 `true`。
 
 ### 完成
 
@@ -94,6 +96,20 @@ class ApplicationController < ActionController::Base
   end
 end
 ```
+
+## 版本记录
+
+* 0.4.0
+
+支持 `filter_exception` 选项
+
+* 0.3.0
+
+修复已知bug
+
+* 0.1.0
+
+发布内测版
 
 ## Development
 

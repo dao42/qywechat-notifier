@@ -5,6 +5,8 @@ module ExceptionNotifier
   class QyWechatNotifier < BaseNotifier
     def initialize(options)
       super
+      @filter_exception = options[:filter_exception]
+      @filter_exception = true if @filter_exception.nil?
     end
 
     def call(exception, options={})
@@ -21,15 +23,21 @@ module ExceptionNotifier
           timestamp: Time.current.strftime('%Y-%m-%d %H:%M:%S')
         }
 
-        message = <<-EOF
-Exception>>> #{exception.class.to_s}: #{exception.message.inspect}
-URL>>> #{request_items[:http_method]}: #{request_items[:url]}( from: #{request_items[:ip_address]} )
-PARAM>>> #{request_items[:parameters]}
-Agent>>> #{request.filtered_env['HTTP_USER_AGENT']}
-Data>>> #{env && env['exception_notifier.exception_data']}
-------------
-Backtrace( 5 below )>>>\n
-#{exception.backtrace[0..4].join("\n")}
+        bt_msg = ''
+        if @filter_exception
+          bt_msg = %Q{Backtrace( Application Only, 5 below )>>>\n#{Rails.backtrace_cleaner.filter(exception.backtrace)[0..4].join("\n")}"}
+        else
+          bt_msg = %Q{Backtrace( 5 below )>>>\n#{exception.backtrace[0..4].join("\n")}}
+        end
+
+        message = <<~EOF
+          Exception>>> #{exception.class.to_s}: #{exception.message.inspect}
+          URL>>> #{request_items[:http_method]}: #{request_items[:url]}( from: #{request_items[:ip_address]} )
+          PARAM>>> #{request_items[:parameters]}
+          Agent>>> #{request.filtered_env['HTTP_USER_AGENT']}
+          Data>>> #{env && env['exception_notifier.exception_data']}
+          ------------
+          #{bt_msg}
         EOF
 
         Qywechat::Notifier::QyAPI.api_message.send_groupchat(message)
