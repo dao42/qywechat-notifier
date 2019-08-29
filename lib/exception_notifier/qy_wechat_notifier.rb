@@ -49,7 +49,7 @@ OPTIONS>>> \n
 #{options.to_yaml}
 ------------
 Backtrace( 5 below )>>>\n
-#{exception.backtrace[0..4].join("\n")}
+#{exception.backtrace.to_a[0..4].join("\n")}
         EOF
 
         Qywechat::Notifier::QyAPI.api_message.send_groupchat(message)
