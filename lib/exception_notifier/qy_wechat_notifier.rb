@@ -32,7 +32,7 @@ module ExceptionNotifier
 
         message = <<~EOF
           Exception>>> #{exception.class.to_s}: #{exception.message.inspect}
-          URL>>> #{request_items[:http_method]}: #{request_items[:url]}( from: #{request_items[:ip_address]} )
+          URL>>> #{request_items[:http_method]}: #{request_items[:url]} ( from: #{request_items[:ip_address]} )
           PARAM>>> #{request_items[:parameters]}
           Agent>>> #{request.filtered_env['HTTP_USER_AGENT']}
           Data>>> #{env && env['exception_notifier.exception_data']}
